@@ -65,6 +65,7 @@ class _ConnScreenState extends State<ConnScreen> {
                         Text("Welcome!", style: textTheme.titleLarge),
                         SizedBox(height: mediaQuery.height * 0.04),
                         TextFormField(
+                          style: textTheme.bodySmall,
                           onTapOutside: (_) =>
                               FocusScope.of(context).requestFocus(FocusNode()),
                           controller: _ipController,
@@ -84,6 +85,7 @@ class _ConnScreenState extends State<ConnScreen> {
                         ),
                         SizedBox(height: mediaQuery.height * 0.04),
                         TextFormField(
+                          style: textTheme.bodySmall,
                           onTapOutside: (_) =>
                               FocusScope.of(context).requestFocus(FocusNode()),
                           controller: _portController,
@@ -105,6 +107,7 @@ class _ConnScreenState extends State<ConnScreen> {
                         ),
                         SizedBox(height: mediaQuery.height * 0.04),
                         TextFormField(
+                          style: textTheme.bodySmall,
                           onTapOutside: (_) =>
                               FocusScope.of(context).requestFocus(FocusNode()),
                           controller: _timeoutController,
