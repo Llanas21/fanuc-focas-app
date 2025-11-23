@@ -39,10 +39,10 @@ class GamepadProvider with ChangeNotifier {
       // Si se presionó un botón, procesarlo aquí
       if (_lastButton != null) {
         if (_lastButton == "button-4") {
-          axisSelector.selectedAxis = axisSelector.selectedAxis! - 1;
+          axisSelector.selectedVAxis = axisSelector.selectedVAxis! - 1;
           print("Eje cambiado hacia atrás");
         } else if (_lastButton == "button-5") {
-          axisSelector.selectedAxis = axisSelector.selectedAxis! + 1;
+          axisSelector.selectedVAxis = axisSelector.selectedVAxis! + 1;
           print("Eje cambiado hacia adelante");
         }
 
@@ -63,15 +63,15 @@ class GamepadProvider with ChangeNotifier {
         direction = 1;
       }
 
-      print(axisSelector.selectedAxis);
+      print(axisSelector.selectedVAxis);
 
-      if (axisSelector.selectedAxis != null && direction != 0) {
+      if (axisSelector.selectedVAxis != null && direction != 0) {
         print("El valor de direction es: $direction");
-        controlService.startJogFeedrate(
-          axisSelector.selectedAxis!,
-          direction,
-          100,
-        );
+        // controlService.startJogFeedrate(
+        //   axisSelector.selectedAxis!,
+        //   direction,
+        //   100,
+        // );
       } else {
         controlService.stopJog();
       }

@@ -1,14 +1,17 @@
+import 'package:fanuc_focas_app/presentation/providers/gamepad_provider.dart';
 import 'package:fanuc_focas_app/presentation/widgets/abs_pos_widget.dart';
 import 'package:fanuc_focas_app/presentation/widgets/act_cycle_widget.dart';
 import 'package:fanuc_focas_app/presentation/widgets/alarm_msg_widget.dart';
 import 'package:fanuc_focas_app/presentation/widgets/app_bar_row_widget.dart';
 import 'package:fanuc_focas_app/presentation/widgets/drawer_widget.dart';
-import 'package:fanuc_focas_app/presentation/widgets/label_axis_widget.dart';
+import 'package:fanuc_focas_app/presentation/widgets/haxis_btn_widget.dart';
+import 'package:fanuc_focas_app/presentation/widgets/vaxis_btn_widget.dart';
 import 'package:fanuc_focas_app/presentation/widgets/mach_pos_widget.dart';
 import 'package:fanuc_focas_app/presentation/widgets/main_program_widget.dart';
 import 'package:fanuc_focas_app/presentation/widgets/mode_selector_widget.dart';
 import 'package:fanuc_focas_app/presentation/widgets/rapid_trav_selector_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -28,6 +31,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // context.read<GamepadProvider>().startListening();
+
     TextTheme textTheme = Theme.of(context).textTheme;
     Size mediaQuery = MediaQuery.of(context).size;
 
@@ -65,15 +70,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text("Axis", style: textTheme.titleSmall),
-                                  LabelAxisWidget(label: "X"),
-                                  LabelAxisWidget(label: "Y"),
-                                  LabelAxisWidget(label: "Z"),
-                                  LabelAxisWidget(label: "B"),
-                                  LabelAxisWidget(label: "U"),
-                                  LabelAxisWidget(label: "V"),
-                                  LabelAxisWidget(label: "W"),
-                                  LabelAxisWidget(label: "C"),
+                                  Text("V-Axis", style: textTheme.titleSmall),
+                                  VAxisBtnWidget(label: "X"),
+                                  VAxisBtnWidget(label: "Y"),
+                                  VAxisBtnWidget(label: "Z"),
+                                  VAxisBtnWidget(label: "B"),
+                                  VAxisBtnWidget(label: "U"),
+                                  VAxisBtnWidget(label: "V"),
+                                  VAxisBtnWidget(label: "W"),
+                                  VAxisBtnWidget(label: "C"),
                                 ],
                               ),
                               Column(
@@ -149,6 +154,21 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     SizedBox(width: mediaQuery.width * 0.04),
                     Expanded(child: MainProgramWidget()),
+                    SizedBox(width: mediaQuery.width * 0.04),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("H-Axis", style: textTheme.titleSmall),
+                        HAxisBtnWidget(label: "X"),
+                        HAxisBtnWidget(label: "Y"),
+                        HAxisBtnWidget(label: "Z"),
+                        HAxisBtnWidget(label: "B"),
+                        HAxisBtnWidget(label: "U"),
+                        HAxisBtnWidget(label: "V"),
+                        HAxisBtnWidget(label: "W"),
+                        HAxisBtnWidget(label: "C"),
+                      ],
+                    ),
                   ],
                 ),
               ),

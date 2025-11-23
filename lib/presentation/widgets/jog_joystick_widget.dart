@@ -32,7 +32,7 @@ class _JogJoystickWidgetState extends State<JogJoystickWidget> {
       listen: false,
     );
 
-    int? axis = axisSelectorProvider.selectedAxis;
+    int? axis = axisSelectorProvider.selectedVAxis;
 
     return Joystick(
       includeInitialAnimation: false,
@@ -45,7 +45,9 @@ class _JogJoystickWidgetState extends State<JogJoystickWidget> {
           builder: (BuildContext context, value, Widget? child) {
             return AnimatedContainer(
               decoration: BoxDecoration(
-                color: value.selectedAxis == null ? Colors.grey : Colors.indigo,
+                color: value.selectedVAxis == null
+                    ? Colors.grey
+                    : Colors.indigo,
                 shape: BoxShape.circle,
               ),
               duration: const Duration(milliseconds: 100),
@@ -64,7 +66,7 @@ class _JogJoystickWidgetState extends State<JogJoystickWidget> {
         ),
       ),
       listener: (details) {
-        if (axisSelectorProvider.selectedAxis == null) return;
+        if (axisSelectorProvider.selectedVAxis == null) return;
 
         if (details.y < 0 || details.x < 0) {
           // controlService.stopJog(axisSelectorProvider.selectedAxis!);
@@ -73,10 +75,10 @@ class _JogJoystickWidgetState extends State<JogJoystickWidget> {
               : (details.y.abs() * 100).round();
 
           print(
-            "$feedrate es el feedrate del eje ${axisSelectorProvider.selectedAxis}",
+            "$feedrate es el feedrate del eje ${axisSelectorProvider.selectedVAxis}",
           );
           controlService.startJogFeedrate(
-            axisSelectorProvider.selectedAxis!,
+            axisSelectorProvider.selectedVAxis!,
             -1,
             feedrate,
           );
@@ -90,10 +92,10 @@ class _JogJoystickWidgetState extends State<JogJoystickWidget> {
               : (details.y.abs() * 100).round();
 
           print(
-            "$feedrate es el feedrate del eje ${axisSelectorProvider.selectedAxis}",
+            "$feedrate es el feedrate del eje ${axisSelectorProvider.selectedVAxis}",
           );
           controlService.startJogFeedrate(
-            axisSelectorProvider.selectedAxis!,
+            axisSelectorProvider.selectedVAxis!,
             1,
             feedrate,
           );
@@ -109,18 +111,18 @@ class _JogJoystickWidgetState extends State<JogJoystickWidget> {
         }
       },
       onStickDragStart: () {
-        if (axisSelectorProvider.selectedAxis == null) {
+        if (axisSelectorProvider.selectedVAxis == null) {
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(const SnackBar(content: Text("Select an axis")));
         } else {
-          absPosProvider.startStream(axisSelectorProvider.selectedAxis!);
-          machPosProvider.startStream(axisSelectorProvider.selectedAxis!);
+          absPosProvider.startStream(axisSelectorProvider.selectedVAxis!);
+          machPosProvider.startStream(axisSelectorProvider.selectedVAxis!);
         }
       },
       onStickDragEnd: () {
-        absPosProvider.stopStream(axisSelectorProvider.selectedAxis!);
-        machPosProvider.stopStream(axisSelectorProvider.selectedAxis!);
+        absPosProvider.stopStream(axisSelectorProvider.selectedVAxis!);
+        machPosProvider.stopStream(axisSelectorProvider.selectedVAxis!);
       },
     );
   }

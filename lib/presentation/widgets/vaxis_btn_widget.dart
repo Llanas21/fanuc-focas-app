@@ -2,8 +2,8 @@ import 'package:fanuc_focas_app/presentation/providers/axis_selector_provider.da
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class LabelAxisWidget extends StatelessWidget {
-  const LabelAxisWidget({super.key, required this.label});
+class VAxisBtnWidget extends StatelessWidget {
+  const VAxisBtnWidget({super.key, required this.label});
 
   final String label;
 
@@ -30,17 +30,23 @@ class LabelAxisWidget extends StatelessWidget {
             height: mediaQuery.height * 0.07,
             child: TextButton(
               onPressed: () {
-                axisSelectorProvider.selectedAxis == axes[label]
-                    ? axisSelectorProvider.selectedAxis = null
-                    : axisSelectorProvider.selectedAxis = axes[label];
+                axisSelectorProvider.selectedVAxis == axes[label]
+                    ? axisSelectorProvider.selectedVAxis = null
+                    : axisSelectorProvider.selectedVAxis = axes[label];
               },
-              style: TextButton.styleFrom(padding: const EdgeInsets.all(6.0)),
+              style: TextButton.styleFrom(
+                padding: const EdgeInsets.all(6.0),
+                backgroundColor:
+                    axisSelectorProvider.selectedVAxis == axes[label]
+                    ? Colors.indigo.withOpacity(0.2)
+                    : Colors.transparent,
+              ),
               child: FittedBox(
                 fit: BoxFit.contain,
                 child: Text(
                   label,
                   style: textTheme.bodySmall?.copyWith(
-                    color: axisSelectorProvider.selectedAxis == axes[label]
+                    color: axisSelectorProvider.selectedVAxis == axes[label]
                         ? Colors.indigo
                         : Colors.black,
                   ),

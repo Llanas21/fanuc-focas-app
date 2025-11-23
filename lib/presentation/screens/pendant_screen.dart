@@ -4,7 +4,7 @@ import 'package:fanuc_focas_app/presentation/widgets/app_bar_row_widget.dart';
 import 'package:fanuc_focas_app/presentation/widgets/axis_selector_widget.dart';
 import 'package:fanuc_focas_app/presentation/widgets/drawer_widget.dart';
 import 'package:fanuc_focas_app/presentation/widgets/jog_joystick_widget.dart';
-import 'package:fanuc_focas_app/presentation/widgets/label_axis_widget.dart';
+import 'package:fanuc_focas_app/presentation/widgets/vaxis_btn_widget.dart';
 import 'package:fanuc_focas_app/presentation/widgets/mach_pos_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -110,15 +110,15 @@ class PendantScreen extends StatelessWidget {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        LabelAxisWidget(label: ""),
-                        LabelAxisWidget(label: "1"),
-                        LabelAxisWidget(label: "2"),
-                        LabelAxisWidget(label: "3"),
-                        LabelAxisWidget(label: "4"),
-                        LabelAxisWidget(label: "5"),
-                        LabelAxisWidget(label: "6"),
-                        LabelAxisWidget(label: "7"),
-                        LabelAxisWidget(label: "8"),
+                        VAxisBtnWidget(label: ""),
+                        VAxisBtnWidget(label: "1"),
+                        VAxisBtnWidget(label: "2"),
+                        VAxisBtnWidget(label: "3"),
+                        VAxisBtnWidget(label: "4"),
+                        VAxisBtnWidget(label: "5"),
+                        VAxisBtnWidget(label: "6"),
+                        VAxisBtnWidget(label: "7"),
+                        VAxisBtnWidget(label: "8"),
                       ],
                     ),
                   ],

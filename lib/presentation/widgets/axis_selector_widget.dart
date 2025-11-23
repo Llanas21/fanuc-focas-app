@@ -15,7 +15,7 @@ class AxisSelectorWidget extends StatelessWidget {
           GestureDetector(
             child: AnimatedContainer(
               decoration: BoxDecoration(
-                color: axisSelectorProvider.selectedAxis == axis
+                color: axisSelectorProvider.selectedVAxis == axis
                     ? Colors.indigo
                     : Colors.grey[300],
                 borderRadius: BorderRadius.circular(4.0),
@@ -34,7 +34,7 @@ class AxisSelectorWidget extends StatelessWidget {
                     child: Text(
                       axis.toString(),
                       style: TextStyle(
-                        color: axisSelectorProvider.selectedAxis == axis
+                        color: axisSelectorProvider.selectedVAxis == axis
                             ? Colors.white
                             : Colors.black,
                       ),
@@ -44,9 +44,9 @@ class AxisSelectorWidget extends StatelessWidget {
               ),
             ),
             onTap: () {
-              axisSelectorProvider.selectedAxis == axis
-                  ? axisSelectorProvider.selectedAxis = null
-                  : axisSelectorProvider.selectedAxis = axis;
+              axisSelectorProvider.selectedVAxis == axis
+                  ? axisSelectorProvider.selectedVAxis = null
+                  : axisSelectorProvider.selectedVAxis = axis;
             },
           ),
     );
