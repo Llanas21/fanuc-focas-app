@@ -43,41 +43,28 @@ class GamepadProvider with ChangeNotifier {
     if (event.key.contains('X')) {
       _joystickPosition = Offset(event.value, _joystickPosition.dy);
       _updateBeingDragged(isXBeingDragged, event.value);
-      int direction;
-      if ((event.value ~/ 1000) <= 5) {
-        direction = -1;
-      } else {
-        direction = 1;
-      }
-      isXBeingDragged.value
-          ? controlService.startJogFeedrate(
-              axisSelector.selectedHAxis!,
-              direction,
-              100,
-            )
-          : controlService.stopJog();
     } else if (event.key.contains('Y')) {
       _joystickPosition = Offset(_joystickPosition.dx, event.value);
       _updateBeingDragged(isYBeingDragged, event.value);
     } else if (event.key.contains('R')) {
       _joystickPosition = Offset(_joystickPosition.dx, event.value);
       _updateBeingDragged(isRBeingDragged, event.value);
+      // int direction;
+      // if ((event.value ~/ 1000) <= 5) {
+      //   direction = -1;
+      // } else {
+      //   direction = 1;
+      // }
+      // isUBeingDragged.value
+      //     ? controlService.startJogFeedrate(
+      //         axisSelector.selectedVAxis!,
+      //         direction,
+      //         100,
+      //       )
+      //     : controlService.stopJog();
     } else if (event.key.contains('U')) {
       _joystickPosition = Offset(_joystickPosition.dx, event.value);
       _updateBeingDragged(isUBeingDragged, event.value);
-      int direction;
-      if ((event.value ~/ 1000) <= 5) {
-        direction = -1;
-      } else {
-        direction = 1;
-      }
-      isUBeingDragged.value
-          ? controlService.startJogFeedrate(
-              axisSelector.selectedVAxis!,
-              direction,
-              100,
-            )
-          : controlService.stopJog();
     }
 
     _joystickMagnitude = _joystickPosition.distance;
@@ -95,6 +82,19 @@ class GamepadProvider with ChangeNotifier {
 
     if (target.value != newValue) {
       target.value = newValue;
+      int direction;
+      if ((value ~/ 1000) <= 5) {
+        direction = -1;
+      } else {
+        direction = 1;
+      }
+      newValue
+          ? controlService.startJogFeedrate(
+              axisSelector.selectedHAxis!,
+              direction,
+              100,
+            )
+          : controlService.stopJog();
     }
   }
 
