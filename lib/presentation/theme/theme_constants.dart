@@ -32,7 +32,7 @@ ThemeData lightTheme = ThemeData(
       fontSize: 28,
       fontWeight: FontWeight.bold,
     ),
-    iconTheme: IconThemeData(color: Colors.black),
+    iconTheme: IconThemeData(color: Colors.black, size: 28),
   ),
   switchTheme: SwitchThemeData(
     trackColor: WidgetStateProperty.resolveWith((states) {
@@ -69,7 +69,7 @@ ThemeData lightTheme = ThemeData(
   ),
   snackBarTheme: SnackBarThemeData(
     backgroundColor: Colors.redAccent,
-    contentTextStyle: const TextStyle(color: Colors.white, fontSize: 16),
+    contentTextStyle: const TextStyle(color: Colors.white, fontSize: 24),
     // elevation: 0.0,
     behavior: SnackBarBehavior.floating,
   ),

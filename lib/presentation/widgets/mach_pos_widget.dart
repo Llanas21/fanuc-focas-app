@@ -43,9 +43,8 @@ class _MachPosWidgetState extends State<MachPosWidget> {
           if (value == null) {
             return Center(
               child: FittedBox(
-                child: LoadingAnimationWidget.hexagonDots(
-                  color: Colors.black,
-                  size: 16,
+                child: FittedBox(
+                  child: Text("000.000", style: textTheme.bodySmall),
                 ),
               ),
             );

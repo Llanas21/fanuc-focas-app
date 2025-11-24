@@ -30,27 +30,31 @@ class VAxisBtnWidget extends StatelessWidget {
             height: mediaQuery.height * 0.07,
             child: TextButton(
               onPressed: () {
-                axisSelectorProvider.selectedVAxis == axes[label]
-                    ? axisSelectorProvider.selectedVAxis = null
-                    : axisSelectorProvider.selectedVAxis = axes[label];
+                try {
+                  axisSelectorProvider.selectedVAxis == axes[label]
+                      ? axisSelectorProvider.selectedVAxis = null
+                      : axisSelectorProvider.selectedVAxis = axes[label];
+                } catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Text(e.toString()),
+                      ),
+                    ),
+                  );
+                }
               },
               style: TextButton.styleFrom(
                 padding: const EdgeInsets.all(6.0),
                 backgroundColor:
                     axisSelectorProvider.selectedVAxis == axes[label]
-                    ? Colors.indigo.withOpacity(0.2)
+                    ? Colors.indigo.withValues(alpha: 0.2)
                     : Colors.transparent,
               ),
               child: FittedBox(
                 fit: BoxFit.contain,
-                child: Text(
-                  label,
-                  style: textTheme.bodySmall?.copyWith(
-                    color: axisSelectorProvider.selectedVAxis == axes[label]
-                        ? Colors.indigo
-                        : Colors.black,
-                  ),
-                ),
+                child: Text(label, style: textTheme.bodySmall),
               ),
             ),
           ),

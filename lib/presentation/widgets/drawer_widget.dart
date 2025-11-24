@@ -10,114 +10,117 @@ class DrawerWidget extends StatelessWidget {
 
     Size mediaQuery = MediaQuery.of(context).size;
 
-    return Drawer(
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Wrap(
-              runSpacing: mediaQuery.height * 0.02,
-              children: [
-                Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.only(
-                    top: 24 + MediaQuery.of(context).padding.top,
-                    bottom: 24,
-                  ),
-                  color: Colors.indigo,
-                  child: Column(
-                    children: [
-                      Text(
-                        "José Llanas",
-                        style: textTheme.titleMedium?.copyWith(
-                          color: Colors.white,
-                        ),
-                      ),
-                      SizedBox(height: mediaQuery.height * 0.01),
-                      Text(
-                        "joseluisllanas21@gmail.com",
-                        style: textTheme.bodySmall?.copyWith(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                ListTile(
-                  leading: const Icon(Icons.home),
-                  title: Text('Home', style: textTheme.bodySmall),
-                  onTap: () {
-                    context.goNamed("/home");
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.list),
-                  title: Text('Programs', style: textTheme.bodySmall),
-                  onTap: () {
-                    context.goNamed("/programs");
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.gamepad),
-                  title: Text('Handle', style: textTheme.bodySmall),
-                  onTap: () {
-                    context.goNamed("/handle");
-                  },
-                ),
-                // ListTile(
-                //   leading: const Icon(Icons.settings),
-                //   title: Text('Settings', style: textTheme.bodySmall),
-                //   onTap: () {
-                //     context.goNamed("/settings");
-                //   },
-                // ),
-                ListTile(
-                  leading: const Icon(Icons.logout),
-                  title: Text('Disconnect', style: textTheme.bodySmall),
-                  onTap: () async {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Text(
-                            'Cerrar sesión',
-                            style: textTheme.bodyMedium,
+    return SizedBox(
+      width: mediaQuery.width * 0.35,
+      child: Drawer(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Wrap(
+                runSpacing: mediaQuery.height * 0.02,
+                children: [
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.only(
+                      top: 24 + MediaQuery.of(context).padding.top,
+                      bottom: 24,
+                    ),
+                    color: Colors.indigo,
+                    child: Column(
+                      children: [
+                        Text(
+                          "José Llanas",
+                          style: textTheme.titleMedium?.copyWith(
+                            color: Colors.white,
                           ),
-                          content: Text(
-                            "¿Estás seguro de que deseas cerrar la sesión?",
-                            style: textTheme.bodySmall,
+                        ),
+                        SizedBox(height: mediaQuery.height * 0.01),
+                        Text(
+                          "joseluisllanas21@gmail.com",
+                          style: textTheme.bodySmall?.copyWith(
+                            color: Colors.white,
                           ),
-                          actions: [
-                            TextButton(
-                              onPressed: () async {
-                                // AuthService authService = AuthService();
-                                // await authService.signOut();
-                                // context.goNamed('/login');
-                              },
-                              child: Text(
-                                'Aceptar',
-                                style: textTheme.labelSmall,
-                              ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.home),
+                    title: Text('Home', style: textTheme.bodySmall),
+                    onTap: () {
+                      context.goNamed("/home");
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.list),
+                    title: Text('Programs', style: textTheme.bodySmall),
+                    onTap: () {
+                      context.goNamed("/programs");
+                    },
+                  ),
+                  // ListTile(
+                  //   leading: const Icon(Icons.gamepad),
+                  //   title: Text('Handle', style: textTheme.bodySmall),
+                  //   onTap: () {
+                  //     context.goNamed("/handle");
+                  //   },
+                  // ),
+                  // ListTile(
+                  //   leading: const Icon(Icons.settings),
+                  //   title: Text('Settings', style: textTheme.bodySmall),
+                  //   onTap: () {
+                  //     context.goNamed("/settings");
+                  //   },
+                  // ),
+                  ListTile(
+                    leading: const Icon(Icons.logout),
+                    title: Text('Disconnect', style: textTheme.bodySmall),
+                    onTap: () async {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text(
+                              'Cerrar sesión',
+                              style: textTheme.bodyMedium,
                             ),
-                            TextButton(
-                              onPressed: () {
-                                context.pop();
-                              },
-                              child: Text(
-                                'Cancelar',
-                                style: textTheme.labelSmall?.copyWith(
-                                  color: Colors.black,
+                            content: Text(
+                              "¿Estás seguro de que deseas cerrar la sesión?",
+                              style: textTheme.bodySmall,
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () async {
+                                  // AuthService authService = AuthService();
+                                  // await authService.signOut();
+                                  // context.goNamed('/login');
+                                },
+                                child: Text(
+                                  'Aceptar',
+                                  style: textTheme.labelSmall,
                                 ),
                               ),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  },
-                ),
-              ],
-            ),
-          ],
+                              TextButton(
+                                onPressed: () {
+                                  context.pop();
+                                },
+                                child: Text(
+                                  'Cancelar',
+                                  style: textTheme.labelSmall?.copyWith(
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -5,8 +5,8 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 
 class CycleBtnWidget extends StatelessWidget {
-  const CycleBtnWidget({super.key, required this.label, required this.color});
-  final String label;
+  const CycleBtnWidget({super.key, required this.icon, required this.color});
+  final IconData icon;
   final Color color;
 
   @override
@@ -16,38 +16,26 @@ class CycleBtnWidget extends StatelessWidget {
 
     return Consumer(
       builder: (context, ModeSelectorProvider modeSelectorProvider, child) =>
-          GestureDetector(
-            child: AnimatedContainer(
-              decoration: BoxDecoration(
-                color: color,
-                borderRadius: BorderRadius.circular(4.0),
-              ),
-              width: mediaQuery.width * 0.105,
-              height: mediaQuery.height * 0.115,
-              duration: const Duration(milliseconds: 100),
-              curve: Curves.easeInOut,
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: mediaQuery.width * 0.04,
-                  vertical: mediaQuery.height * 0.02,
-                ),
-                child: Center(
-                  child: FittedBox(
-                    child: Text(
-                      label,
-                      style: textTheme.bodySmall?.copyWith(
-                        color: modeSelectorProvider.mode == label
-                            ? Colors.white
-                            : Colors.black,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            onTap: () {
-              // modeSelectorProvider.mode = label;
-            },
+          IconButton(
+            // child: AnimatedContainer(
+            //   decoration: BoxDecoration(
+            //     color: color,
+            //     borderRadius: BorderRadius.circular(8.0),
+            //   ),
+            //   width: mediaQuery.width * 0.085,
+            //   height: mediaQuery.height * 0.115,
+            //   duration: const Duration(milliseconds: 100),
+            //   curve: Curves.easeInOut,
+            //   child: Padding(
+            //     padding: EdgeInsets.symmetric(
+            //       horizontal: mediaQuery.width * 0.01,
+            //       vertical: mediaQuery.height * 0.01,
+            //     ),
+            //     child: Center(child: Icon(icon, size: 32)),
+            //   ),
+            // ),
+            onPressed: () {},
+            icon: Icon(icon, size: 24),
           ),
     );
   }
