@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 import 'package:fanuc_focas_app/data/services/control_service.dart';
 import 'package:fanuc_focas_app/presentation/providers/axis_selector_provider.dart';
 import 'package:flutter/material.dart';
@@ -8,80 +9,71 @@ class GamepadProvider with ChangeNotifier {
   final AxisSelectorProvider axisSelector;
   final ControlService controlService;
 
-  StreamSubscription? _sub;
-  Timer? _timer;
-  Offset _lastPos = Offset.zero;
-  String? _lastButton;
-  bool _isPaused = false; // ← Para evitar procesar durante la pausa
+  StreamSubscription<GamepadEvent>? _subscription;
+
+  Offset _joystickPosition = Offset.zero;
+  double _joystickMagnitude = 0.0;
+  String _lastKey = '';
+  bool _buttonPressed = false;
+
+  ValueNotifier<bool> isYBeingDragged = ValueNotifier(false);
+  ValueNotifier<bool> isXBeingDragged = ValueNotifier(false);
+  ValueNotifier<bool> isRBeingDragged = ValueNotifier(false);
+  ValueNotifier<bool> isUBeingDragged = ValueNotifier(false);
 
   GamepadProvider({required this.axisSelector, required this.controlService});
 
-  Offset get pos => _lastPos;
+  Offset get joystickPos => _joystickPosition;
+  double get magnitude => _joystickMagnitude;
+  String get lastKey => _lastKey;
+  bool get buttonPressed => _buttonPressed;
 
   void startListening() {
-    // Escucha eventos del gamepad (solo registra inputs)
-    _sub = Gamepads.events.listen((event) {
+    _subscription = Gamepads.events.listen((event) {
       if (event.type == KeyType.analog) {
-        if (event.key.contains('X')) {
-          _lastPos = Offset(event.value, _lastPos.dy);
-        } else if (event.key.contains('Y')) {
-          _lastPos = Offset(_lastPos.dx, event.value);
-        }
+        _handleAnalog(event);
       } else if (event.type == KeyType.button) {
-        _lastButton = event.key; // ← Guardamos el último botón presionado
+        _handleButton(event);
       }
-    });
-
-    // Procesa continuamente cada 500 ms
-    _timer = Timer.periodic(const Duration(milliseconds: 300), (_) async {
-      if (_isPaused) return; // ← No procesar si estamos en pausa
-
-      // Si se presionó un botón, procesarlo aquí
-      if (_lastButton != null) {
-        if (_lastButton == "button-4") {
-          axisSelector.selectedVAxis = axisSelector.selectedVAxis! - 1;
-          print("Eje cambiado hacia atrás");
-        } else if (_lastButton == "button-5") {
-          axisSelector.selectedVAxis = axisSelector.selectedVAxis! + 1;
-          print("Eje cambiado hacia adelante");
-        }
-
-        _lastButton = null; // Limpiar el botón procesado
-
-        // Pausa de 100 ms
-        _isPaused = true;
-        await Future.delayed(const Duration(seconds: 1));
-        _isPaused = false;
-      }
-
-      // --- Lógica de movimiento del joystick ---
-      int direction = 0;
-
-      if (_lastPos.dy > 34000) {
-        direction = -1;
-      } else if (_lastPos.dy < 30000) {
-        direction = 1;
-      }
-
-      print(axisSelector.selectedVAxis);
-
-      if (axisSelector.selectedVAxis != null && direction != 0) {
-        print("El valor de direction es: $direction");
-        // controlService.startJogFeedrate(
-        //   axisSelector.selectedAxis!,
-        //   direction,
-        //   100,
-        // );
-      } else {
-        controlService.stopJog();
-      }
-
-      print(_lastPos);
     });
   }
 
-  void stopListening() {
-    _sub?.cancel();
-    _timer?.cancel();
+  void _handleAnalog(GamepadEvent event) {
+    if (event.key.contains('X')) {
+      _joystickPosition = Offset(event.value, _joystickPosition.dy);
+      _updateBeingDragged(isXBeingDragged, event.value);
+    } else if (event.key.contains('Y')) {
+      _joystickPosition = Offset(_joystickPosition.dx, event.value);
+      _updateBeingDragged(isYBeingDragged, event.value);
+    } else if (event.key.contains('R')) {
+      _joystickPosition = Offset(_joystickPosition.dx, event.value);
+      _updateBeingDragged(isRBeingDragged, event.value);
+    } else if (event.key.contains('U')) {
+      _joystickPosition = Offset(_joystickPosition.dx, event.value);
+      _updateBeingDragged(isUBeingDragged, event.value);
+    }
+
+    _joystickMagnitude = _joystickPosition.distance;
+    notifyListeners();
+  }
+
+  void _handleButton(GamepadEvent event) {
+    _lastKey = event.key;
+    _buttonPressed = event.value > 0;
+    notifyListeners();
+  }
+
+  void _updateBeingDragged(ValueNotifier<bool> target, double value) {
+    bool newValue = (value ~/ 1000) <= 5 || (value ~/ 1000) >= 60;
+
+    if (target.value != newValue) {
+      target.value = newValue;
+    }
+  }
+
+  @override
+  void dispose() {
+    _subscription?.cancel();
+    super.dispose();
   }
 }

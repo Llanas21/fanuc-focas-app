@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:fanuc_focas_app/data/services/control_service.dart';
 import 'package:fanuc_focas_app/presentation/providers/axis_selector_provider.dart';
 import 'package:fanuc_focas_app/presentation/providers/mach_pos_provider.dart';
@@ -19,7 +21,9 @@ import 'package:window_manager/window_manager.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await windowManager.ensureInitialized();
+  if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+    await windowManager.ensureInitialized();
+  }
 
   WindowOptions windowOptions = const WindowOptions(fullScreen: true);
   windowManager.waitUntilReadyToShow(windowOptions, () async {
