@@ -32,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // context.read<GamepadProvider>().startListening();
+    context.read<GamepadProvider>().startListening();
 
     TextTheme textTheme = Theme.of(context).textTheme;
     Size mediaQuery = MediaQuery.of(context).size;
