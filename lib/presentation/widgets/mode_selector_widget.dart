@@ -21,7 +21,7 @@ class ModeSelectorWidget extends StatelessWidget {
     };
 
     return Consumer(
-      builder: (context, ModeSelectorProvider modeSelectorProvider, child) =>
+      builder: (context, StatusInfoProvider modeSelectorProvider, child) =>
           GestureDetector(
             child: AnimatedContainer(
               decoration: BoxDecoration(

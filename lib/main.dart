@@ -57,8 +57,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<AxisSelectorProvider>(
           create: (context) => AxisSelectorProvider(),
         ),
-        ChangeNotifierProvider<ModeSelectorProvider>(
-          create: (context) => ModeSelectorProvider(),
+        ChangeNotifierProvider<StatusInfoProvider>(
+          create: (context) => StatusInfoProvider(),
         ),
         ChangeNotifierProvider<RapidTravSelectorProvider>(
           create: (context) => RapidTravSelectorProvider(),

@@ -15,7 +15,7 @@ class CycleBtnWidget extends StatelessWidget {
     Size mediaQuery = MediaQuery.of(context).size;
 
     return Consumer(
-      builder: (context, ModeSelectorProvider modeSelectorProvider, child) =>
+      builder: (context, StatusInfoProvider modeSelectorProvider, child) =>
           IconButton(
             // child: AnimatedContainer(
             //   decoration: BoxDecoration(

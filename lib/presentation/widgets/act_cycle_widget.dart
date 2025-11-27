@@ -11,7 +11,7 @@ class ActCycleWidget extends StatelessWidget {
     Size mediaQuery = MediaQuery.of(context).size;
 
     return Consumer(
-      builder: (context, ModeSelectorProvider modeSelectorProvider, child) =>
+      builder: (context, StatusInfoProvider modeSelectorProvider, child) =>
           GestureDetector(
             child: Container(
               width: mediaQuery.width * 0.22,

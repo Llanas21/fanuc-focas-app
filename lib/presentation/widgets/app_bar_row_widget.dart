@@ -13,7 +13,7 @@ class AppBarRowWidget extends StatelessWidget {
     return Row(
       children: [
         Consumer(
-          builder: (context, ModeSelectorProvider provider, child) {
+          builder: (context, StatusInfoProvider provider, child) {
             final Map<int, String> names = {
               3: "EDIT",
               1: "MEM",
@@ -28,13 +28,78 @@ class AppBarRowWidget extends StatelessWidget {
           },
         ),
         SizedBox(width: mediaQuery.width * 0.04),
-        Text("****", style: textTheme.bodySmall),
+        // Text("*****", style: textTheme.bodySmall),
+        Consumer(
+          builder: (context, StatusInfoProvider provider, child) {
+            if (provider.emergency == 0) {
+              return Text("***", style: textTheme.bodySmall);
+            } else {
+              return Container(
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                padding: EdgeInsets.symmetric(
+                  horizontal: mediaQuery.width * 0.01,
+                ),
+                child: Text(
+                  "EMG",
+                  style: textTheme.bodySmall!.copyWith(color: Colors.white),
+                ),
+              );
+            }
+          },
+        ),
         SizedBox(width: mediaQuery.width * 0.04),
-        Text("***", style: textTheme.bodySmall),
+
+        Consumer(
+          builder: (context, StatusInfoProvider provider, child) {
+            if (provider.alarm == 0) {
+              return Text("***", style: textTheme.bodySmall);
+            } else {
+              return Container(
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                padding: EdgeInsets.symmetric(
+                  horizontal: mediaQuery.width * 0.01,
+                ),
+                child: Text(
+                  "ALM",
+                  style: textTheme.bodySmall!.copyWith(color: Colors.white),
+                ),
+              );
+            }
+          },
+        ),
         SizedBox(width: mediaQuery.width * 0.04),
-        Text("***", style: textTheme.bodySmall),
+        Consumer(
+          builder: (context, StatusInfoProvider provider, child) {
+            final Map<int, String> names = {
+              0: "RESET",
+              1: "STOP",
+              2: "HOLD",
+              3: "START",
+              4: "MSTR",
+            };
+            return Text(
+              names[provider.run] ?? "*****",
+              style: textTheme.bodySmall,
+            );
+          },
+        ),
         SizedBox(width: mediaQuery.width * 0.04),
-        Text("***", style: textTheme.bodySmall),
+
+        Consumer(
+          builder: (context, StatusInfoProvider provider, child) {
+            final Map<int, String> names = {0: "T-MODE", 1: "M-MODE"};
+            return Text(
+              names[provider.tmmode] ?? "*****",
+              style: textTheme.bodySmall,
+            );
+          },
+        ),
       ],
     );
   }

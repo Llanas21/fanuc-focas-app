@@ -101,6 +101,46 @@ class ControlService {
     }
   }
 
+  Future<int> getEmergency() async {
+    try {
+      final response = await _dio.get("/emergency");
+
+      return response.data;
+    } catch (e) {
+      throw Exception("Error getting emergency : $e");
+    }
+  }
+
+  Future<int> getAlarm() async {
+    try {
+      final response = await _dio.get("/alarm");
+
+      return response.data;
+    } catch (e) {
+      throw Exception("Error getting alarm : $e");
+    }
+  }
+
+  Future<int> getRun() async {
+    try {
+      final response = await _dio.get("/run");
+
+      return response.data;
+    } catch (e) {
+      throw Exception("Error getting run : $e");
+    }
+  }
+
+  Future<int> getTMmode() async {
+    try {
+      final response = await _dio.get("/tmmode");
+
+      return response.data;
+    } catch (e) {
+      throw Exception("Error getting tmmode : $e");
+    }
+  }
+
   Future<String> setMode(int mode) async {
     try {
       print("este es el MODEEE: $mode");
