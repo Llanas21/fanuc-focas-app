@@ -67,8 +67,12 @@ class MyApp extends StatelessWidget {
           create: (context) => GamepadProvider(
             axisSelector: context.read<AxisSelectorProvider>(),
             controlService: ControlService(),
-            absPosProvider: context.watch<AbsPosProvider>(),
-            machPosProvider: context.watch<MachPosProvider>(),
+            absPosProvider: Provider.of<AbsPosProvider>(context, listen: false),
+            // machPosProvider: context.watch<MachPosProvider>(),
+            machPosProvider: Provider.of<MachPosProvider>(
+              context,
+              listen: false,
+            ),
           ),
         ),
       ],
