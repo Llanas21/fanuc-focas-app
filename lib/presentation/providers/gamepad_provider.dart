@@ -1,13 +1,17 @@
 import 'dart:async';
 import 'dart:math' as math;
 import 'package:fanuc_focas_app/data/services/control_service.dart';
+import 'package:fanuc_focas_app/presentation/providers/abs_pos_provider.dart';
 import 'package:fanuc_focas_app/presentation/providers/axis_selector_provider.dart';
+import 'package:fanuc_focas_app/presentation/providers/mach_pos_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:gamepads/gamepads.dart';
 
 class GamepadProvider with ChangeNotifier {
   final AxisSelectorProvider axisSelector;
   final ControlService controlService;
+  final AbsPosProvider absPosProvider;
+  final MachPosProvider machPosProvider;
 
   StreamSubscription<GamepadEvent>? _subscription;
 
@@ -21,7 +25,12 @@ class GamepadProvider with ChangeNotifier {
   ValueNotifier<bool> isRBeingDragged = ValueNotifier(false);
   ValueNotifier<bool> isUBeingDragged = ValueNotifier(false);
 
-  GamepadProvider({required this.axisSelector, required this.controlService});
+  GamepadProvider({
+    required this.axisSelector,
+    required this.controlService,
+    required this.absPosProvider,
+    required this.machPosProvider,
+  });
 
   Offset get joystickPos => _joystickPosition;
   double get magnitude => _joystickMagnitude;
@@ -78,11 +87,15 @@ class GamepadProvider with ChangeNotifier {
 
       if (newValue) {
         if (event.key.contains("X")) {
+          absPosProvider.startStream(axisSelector.selectedHAxis!);
+          machPosProvider.startStream(axisSelector.selectedHAxis!);
           print("ENTRAAAA AL CONTROL DEL X");
           print("EJE: ${axisSelector.selectedHAxis}");
           controlService.startJog(axisSelector.selectedHAxis!, direction);
         }
         if (event.key.contains("R")) {
+          absPosProvider.startStream(axisSelector.selectedVAxis!);
+          machPosProvider.startStream(axisSelector.selectedVAxis!);
           print("ENTRAAAA AL CONTROL DEL R");
           print("EJE: ${axisSelector.selectedVAxis}");
           controlService.startJog(axisSelector.selectedVAxis!, direction);
@@ -93,6 +106,10 @@ class GamepadProvider with ChangeNotifier {
           axisSelector.selectedHAxis,
           axisSelector.selectedVAxis,
         ]);
+        absPosProvider.stopStream(axisSelector.selectedHAxis!);
+        machPosProvider.stopStream(axisSelector.selectedHAxis!);
+        absPosProvider.stopStream(axisSelector.selectedVAxis!);
+        machPosProvider.stopStream(axisSelector.selectedVAxis!);
       }
 
       // newValue
