@@ -31,6 +31,7 @@ class GamepadProvider with ChangeNotifier {
   void startListening() {
     print("SE EJECUTA LA FUNCION DE START LISTENING DEL GAMEPAD PROVIDER");
     _subscription = Gamepads.events.listen((event) {
+      print("movimiento ${event.value}");
       if (event.type == KeyType.analog) {
         _handleAnalog(event);
       } else if (event.type == KeyType.button) {
@@ -41,31 +42,18 @@ class GamepadProvider with ChangeNotifier {
 
   void _handleAnalog(GamepadEvent event) {
     if (event.key.contains('X')) {
+      print("Entra al que contiene la X");
       _joystickPosition = Offset(event.value, _joystickPosition.dy);
-      _updateBeingDragged(isXBeingDragged, event.value);
-    } else if (event.key.contains('Y')) {
-      _joystickPosition = Offset(_joystickPosition.dx, event.value);
-      _updateBeingDragged(isYBeingDragged, event.value);
-    } else if (event.key.contains('R')) {
-      _joystickPosition = Offset(_joystickPosition.dx, event.value);
-      _updateBeingDragged(isRBeingDragged, event.value);
-      // int direction;
-      // if ((event.value ~/ 1000) <= 5) {
-      //   direction = -1;
-      // } else {
-      //   direction = 1;
-      // }
-      // isUBeingDragged.value
-      //     ? controlService.startJogFeedrate(
-      //         axisSelector.selectedVAxis!,
-      //         direction,
-      //         100,
-      //       )
-      //     : controlService.stopJog();
-    } else if (event.key.contains('U')) {
-      _joystickPosition = Offset(_joystickPosition.dx, event.value);
-      _updateBeingDragged(isUBeingDragged, event.value);
+      _updateBeingDragged(isXBeingDragged, event);
     }
+    
+    if (event.key.contains('R')) {
+      print("Entra al que contiene la RRRRRRR");
+      _joystickPosition = Offset(_joystickPosition.dx, event.value);
+      _updateBeingDragged(isRBeingDragged, event);
+      
+    }
+    
 
     _joystickMagnitude = _joystickPosition.distance;
     notifyListeners();
@@ -77,20 +65,42 @@ class GamepadProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void _updateBeingDragged(ValueNotifier<bool> target, double value) {
-    bool newValue = (value ~/ 1000) <= 5 || (value ~/ 1000) >= 60;
+  void _updateBeingDragged(ValueNotifier<bool> target, GamepadEvent event) {
+    bool newValue = (event.value ~/ 1000) <= 5 || (event.value ~/ 1000) >= 60;
 
     if (target.value != newValue) {
+      print("Entra con el eje $event");
       target.value = newValue;
       int direction;
-      if ((value ~/ 1000) <= 5) {
+      if ((event.value ~/ 1000) <= 5) {
         direction = -1;
       } else {
         direction = 1;
       }
-      newValue
-          ? controlService.startJog(axisSelector.selectedHAxis!, direction)
-          : controlService.stopJog();
+
+      if (newValue) {
+        if (event.key.contains("X")) {
+          print("ENTRAAAA AL CONTROL DEL X");
+          print("EJE: ${axisSelector.selectedHAxis}");
+          controlService.startJog(axisSelector.selectedHAxis!, direction);
+        }
+        if (event.key.contains("R")) {
+          print("ENTRAAAA AL CONTROL DEL R");
+          print("EJE: ${axisSelector.selectedVAxis}");
+          controlService.startJog(axisSelector.selectedVAxis!, direction);
+        }
+      } 
+      if (!newValue) {
+        controlService.stopJog();
+      }
+      
+      // newValue
+      //     ? controlService.startJogFeedrate(
+      //         axisSelector.selectedHAxis!,
+      //         direction,
+      //         100,
+      //       )
+      //     : controlService.stopJog();
     }
   }
 
