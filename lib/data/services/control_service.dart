@@ -56,6 +56,7 @@ class ControlService {
 
   Future<String> startJog(int axis, int direction) async {
     try {
+      print("SE MANDA EL AXIS $axis");
       final response = await _dio.post(
         "/control/jog/start",
         data: {"axis": axis, "direction": direction},
@@ -78,9 +79,12 @@ class ControlService {
     }
   }
 
-  Future<String> stopJog() async {
+  Future<String> stopJog(List<int?> axes) async {
     try {
-      final response = await _dio.post("/control/jog/stop");
+      final response = await _dio.post(
+        "/control/jog/stop",
+        data: {"axis1": axes[0], "axis2": axes[1]},
+      );
       return response.data;
     } catch (e) {
       throw Exception("Error al detener jog : $e");

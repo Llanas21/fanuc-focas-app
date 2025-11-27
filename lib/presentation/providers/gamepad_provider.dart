@@ -90,7 +90,10 @@ class GamepadProvider with ChangeNotifier {
       }
       newValue
           ? controlService.startJog(axisSelector.selectedHAxis!, direction)
-          : controlService.stopJog();
+          : controlService.stopJog([
+              axisSelector.selectedHAxis,
+              axisSelector.selectedVAxis,
+            ]);
     }
   }
 
