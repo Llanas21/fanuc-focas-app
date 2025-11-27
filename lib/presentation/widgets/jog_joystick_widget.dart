@@ -103,7 +103,7 @@ class _JogJoystickWidgetState extends State<JogJoystickWidget> {
           // absPosProvider.startStream(axisSelectorProvider.selectedAxis!);
           // machPosProvider.startStream(axisSelectorProvider.selectedAxis!);
         } else {
-          controlService.stopJog();
+          // controlService.stopJog();
           // absPosProvider.stopStream(axisSelectorProvider.selectedAxis!);
           // machPosProvider.stopStream(axisSelectorProvider.selectedAxis!);
           // absPosProvider.shouldRefresh();
