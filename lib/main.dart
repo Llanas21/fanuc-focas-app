@@ -21,22 +21,22 @@ import 'package:window_manager/window_manager.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
-    await windowManager.ensureInitialized();
-  }
+  // if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+  //   await windowManager.ensureInitialized();
+  // }
 
-  WindowOptions windowOptions = const WindowOptions(fullScreen: true);
-  windowManager.waitUntilReadyToShow(windowOptions, () async {
-    await windowManager.show();
-    await windowManager.focus();
-  });
+  // WindowOptions windowOptions = const WindowOptions(fullScreen: true);
+  // windowManager.waitUntilReadyToShow(windowOptions, () async {
+  //   await windowManager.show();
+  //   await windowManager.focus();
+  // });
 
-  await SystemChrome.setPreferredOrientations([
-    DeviceOrientation.landscapeLeft,
-    DeviceOrientation.landscapeRight,
-  ]);
+  // await SystemChrome.setPreferredOrientations([
+  //   DeviceOrientation.landscapeLeft,
+  //   DeviceOrientation.landscapeRight,
+  // ]);
 
-  await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+  // await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
 
   runApp(const MyApp());
 }

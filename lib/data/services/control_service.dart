@@ -152,6 +152,50 @@ class ControlService {
     }
   }
 
+  Future<String> startCycle(bool value) async {
+    try {
+      // print("este es el MODEEE: $mode");
+      final response = await _dio.post("/control/cycle/start?value=$value");
+
+      return response.data;
+    } catch (e) {
+      throw Exception("Error setting mode : $e");
+    }
+  }
+
+  Future<String> stopCycle(bool value) async {
+    try {
+      // print("este es el MODEEE: $mode");
+      final response = await _dio.post("/control/cycle/stop?value=$value");
+
+      return response.data;
+    } catch (e) {
+      throw Exception("Error setting mode : $e");
+    }
+  }
+
+  Future<String> reset(bool value) async {
+    try {
+      // print("este es el MODEEE: $mode");
+      final response = await _dio.post("/control/reset?value=$value");
+
+      return response.data;
+    } catch (e) {
+      throw Exception("Error setting mode : $e");
+    }
+  }
+
+  Future<String> home(bool value) async {
+    try {
+      // print("este es el MODEEE: $mode");
+      final response = await _dio.post("/control/home?value=$value");
+
+      return response.data;
+    } catch (e) {
+      throw Exception("Error setting mode : $e");
+    }
+  }
+
   Future<String> getProgram(int programNum) async {
     try {
       final response = await _dio.get("/program?programNum=$programNum");

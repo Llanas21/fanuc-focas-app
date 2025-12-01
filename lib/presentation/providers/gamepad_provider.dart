@@ -19,6 +19,7 @@ class GamepadProvider with ChangeNotifier {
   double _joystickMagnitude = 0.0;
   String _lastKey = '';
   bool _buttonPressed = false;
+  bool _deadman = false;
 
   ValueNotifier<bool> isYBeingDragged = ValueNotifier(false);
   ValueNotifier<bool> isXBeingDragged = ValueNotifier(false);
@@ -36,6 +37,7 @@ class GamepadProvider with ChangeNotifier {
   double get magnitude => _joystickMagnitude;
   String get lastKey => _lastKey;
   bool get buttonPressed => _buttonPressed;
+  bool get deadman => _deadman;
 
   void startListening() {
     print("SE EJECUTA LA FUNCION DE START LISTENING DEL GAMEPAD PROVIDER");
@@ -50,6 +52,17 @@ class GamepadProvider with ChangeNotifier {
   }
 
   void _handleAnalog(GamepadEvent event) {
+    if (event.key.contains('Z')) {
+      print("DEADMAN detectado");
+      _updateDeadman(event);
+      return;
+    }
+
+    if (!_deadman) {
+      // Si el deadman NO está presionado → ignoramos joystick
+      return;
+    }
+
     if (event.key.contains('X')) {
       print("Entra al que contiene la X");
       _joystickPosition = Offset(event.value, _joystickPosition.dy);
@@ -119,6 +132,37 @@ class GamepadProvider with ChangeNotifier {
       //         100,
       //       )
       //     : controlService.stopJog();
+    }
+  }
+
+  void _updateDeadman(GamepadEvent event) {
+    bool newValue = event.value == 128;
+
+    if (_deadman != newValue) {
+      _deadman = newValue;
+      print("Deadman: ${newValue ? "PRESIONADO" : "SUELTO"}");
+
+      if (newValue) {
+        // Deadman presionado
+        // Puede habilitar Jog
+        print("Jog habilitado por Deadman");
+      } else {
+        // Deadman suelto
+        // Frenar ejes
+        print("Jog detenido por Deadman");
+
+        controlService.stopJog([
+          axisSelector.selectedHAxis,
+          axisSelector.selectedVAxis,
+        ]);
+
+        absPosProvider.stopStream(axisSelector.selectedHAxis!);
+        machPosProvider.stopStream(axisSelector.selectedHAxis!);
+        absPosProvider.stopStream(axisSelector.selectedVAxis!);
+        machPosProvider.stopStream(axisSelector.selectedVAxis!);
+      }
+
+      notifyListeners();
     }
   }
 

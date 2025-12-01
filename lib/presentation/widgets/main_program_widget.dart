@@ -57,22 +57,10 @@ class MainProgramWidget extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          CycleBtnWidget(
-                            icon: Icons.play_arrow,
-                            color: Colors.transparent,
-                          ),
-                          CycleBtnWidget(
-                            icon: Icons.pause,
-                            color: Colors.transparent,
-                          ),
-                          CycleBtnWidget(
-                            icon: Icons.stop,
-                            color: Colors.transparent,
-                          ),
-                          CycleBtnWidget(
-                            icon: Icons.refresh,
-                            color: Colors.transparent,
-                          ),
+                          CycleBtnWidget(icon: Icons.play_arrow),
+                          CycleBtnWidget(icon: Icons.stop),
+                          CycleBtnWidget(icon: Icons.home),
+                          CycleBtnWidget(icon: Icons.refresh),
                         ],
                       ),
                     ),
