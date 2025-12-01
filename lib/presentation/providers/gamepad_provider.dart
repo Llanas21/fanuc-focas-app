@@ -136,7 +136,13 @@ class GamepadProvider with ChangeNotifier {
   }
 
   void _updateDeadman(GamepadEvent event) {
-    bool newValue = event.value == 128;
+    // bool newValue = event.value == 128;
+    bool newValue;
+    if (event.value != 128 && event.value != 32767 && event.value != 65408) {
+      newValue = true;
+    } else {
+      newValue = false;
+    }
 
     if (_deadman != newValue) {
       _deadman = newValue;
