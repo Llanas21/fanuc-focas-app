@@ -2,9 +2,12 @@ import 'package:fanuc_focas_app/presentation/providers/gamepad_provider.dart';
 import 'package:fanuc_focas_app/presentation/widgets/abs_pos_widget.dart';
 import 'package:fanuc_focas_app/presentation/widgets/act_cycle_widget.dart';
 import 'package:fanuc_focas_app/presentation/widgets/alarm_msg_widget.dart';
+import 'package:fanuc_focas_app/presentation/widgets/all_abs_pos_widget.dart';
+import 'package:fanuc_focas_app/presentation/widgets/all_mach_pos_widget.dart';
 import 'package:fanuc_focas_app/presentation/widgets/app_bar_row_widget.dart';
 import 'package:fanuc_focas_app/presentation/widgets/cycle_btn_widget.dart';
 import 'package:fanuc_focas_app/presentation/widgets/drawer_widget.dart';
+import 'package:fanuc_focas_app/presentation/widgets/feedrate_widget.dart';
 import 'package:fanuc_focas_app/presentation/widgets/haxis_btn_widget.dart';
 import 'package:fanuc_focas_app/presentation/widgets/vaxis_btn_widget.dart';
 import 'package:fanuc_focas_app/presentation/widgets/mach_pos_widget.dart';
@@ -90,35 +93,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
 
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("Absolute", style: textTheme.titleSmall),
-                              AbsPosWidget(axis: 1),
-                              AbsPosWidget(axis: 2),
-                              AbsPosWidget(axis: 3),
-                              AbsPosWidget(axis: 4),
-                              AbsPosWidget(axis: 5),
-                              AbsPosWidget(axis: 6),
-                              AbsPosWidget(axis: 7),
-                              AbsPosWidget(axis: 8),
-                            ],
-                          ),
+                          AllAbsPosWidget(),
                           // SizedBox(width: mediaQuery.width * 0.06),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("Machine", style: textTheme.titleSmall),
-                              MachPosWidget(axis: 1),
-                              MachPosWidget(axis: 2),
-                              MachPosWidget(axis: 3),
-                              MachPosWidget(axis: 4),
-                              MachPosWidget(axis: 5),
-                              MachPosWidget(axis: 6),
-                              MachPosWidget(axis: 7),
-                              MachPosWidget(axis: 8),
-                            ],
-                          ),
+                          AllMachPosWidget(),
                         ],
                       ),
                     ),
@@ -127,40 +104,36 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: PageView(
                         children: [
                           MainProgramWidget(),
-                          Column(
-                            children: [
-                              Text(
-                                "Rapid Traverse Override",
-                                style: textTheme.titleSmall?.copyWith(
-                                  fontSize: 12,
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0,
+                            ),
+                            child: Column(
+                              children: [
+                                Text(
+                                  "Rapid Traverse Override",
+                                  style: textTheme.titleSmall,
                                 ),
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    RapidTravSelectorWidget(value: 0),
-                                    RapidTravSelectorWidget(value: 25),
-                                    RapidTravSelectorWidget(value: 50),
-                                    RapidTravSelectorWidget(value: 100),
-                                  ],
+                                SizedBox(height: mediaQuery.height * 0.02),
+                                Expanded(
+                                  flex: 1,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      RapidTravSelectorWidget(value: 0),
+                                      RapidTravSelectorWidget(value: 25),
+                                      RapidTravSelectorWidget(value: 50),
+                                      RapidTravSelectorWidget(value: 100),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              SizedBox(height: mediaQuery.height * 0.045),
-                              Expanded(
-                                flex: 2,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    AlarmMsgWidget(),
-                                    ActCycleWidget(),
-                                  ],
-                                ),
-                              ),
-                            ],
+                                SizedBox(height: mediaQuery.height * 0.045),
+                                Expanded(flex: 1, child: FeedrateWidget()),
+                                SizedBox(height: mediaQuery.height * 0.045),
+                                Expanded(flex: 2, child: AlarmMsgWidget()),
+                              ],
+                            ),
                           ),
                         ],
                       ),

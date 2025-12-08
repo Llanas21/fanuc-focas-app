@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:fanuc_focas_app/domain/models/info_model.dart';
 
 class ControlService {
   final Dio _dio;
@@ -18,7 +19,10 @@ class ControlService {
   Future<List<String>> getAbsPositions() async {
     try {
       final response = await _dio.get("/positions/absolute");
-      return response.data;
+      print("ESTO LLEGA AL SERVICE DE DART");
+      print(response.data);
+
+      return (response.data as List).map((e) => e?.toString() ?? "0").toList();
     } catch (e) {
       throw Exception("Error al obtener posiciones : $e");
     }
@@ -38,7 +42,9 @@ class ControlService {
   Future<List<String>> getMachPositions() async {
     try {
       final response = await _dio.get("/positions/machine");
-      return response.data;
+      print(response.data);
+
+      return (response.data as List).map((e) => e?.toString() ?? "0").toList();
     } catch (e) {
       throw Exception("Error al obtener posiciones : $e");
     }
@@ -91,6 +97,27 @@ class ControlService {
     }
   }
 
+  Future<Info> getInfo() async {
+    try {
+      final response = await _dio.get("/status/info");
+      final data = response.data;
+      Info info = Info(
+        alarm: data[0],
+        mode: data[1],
+        dummy: data[2],
+        edit: data[3],
+        emergency: data[4],
+        motion: data[5],
+        mstb: data[6],
+        run: data[7],
+        tmmode: data[8],
+      );
+      return info;
+    } catch (e) {
+      throw Exception("Error getting info : $e");
+    }
+  }
+
   Future<int> getMode() async {
     try {
       final response = await _dio.get("/mode");
@@ -101,50 +128,34 @@ class ControlService {
     }
   }
 
-  Future<int> getEmergency() async {
-    try {
-      final response = await _dio.get("/emergency");
-
-      return response.data;
-    } catch (e) {
-      throw Exception("Error getting emergency : $e");
-    }
-  }
-
-  Future<int> getAlarm() async {
-    try {
-      final response = await _dio.get("/alarm");
-
-      return response.data;
-    } catch (e) {
-      throw Exception("Error getting alarm : $e");
-    }
-  }
-
-  Future<int> getRun() async {
-    try {
-      final response = await _dio.get("/run");
-
-      return response.data;
-    } catch (e) {
-      throw Exception("Error getting run : $e");
-    }
-  }
-
-  Future<int> getTMmode() async {
-    try {
-      final response = await _dio.get("/tmmode");
-
-      return response.data;
-    } catch (e) {
-      throw Exception("Error getting tmmode : $e");
-    }
-  }
-
   Future<String> setMode(int mode) async {
     try {
       print("este es el MODEEE: $mode");
       final response = await _dio.post("/mode?mode=$mode");
+
+      return response.data;
+    } catch (e) {
+      throw Exception("Error setting mode : $e");
+    }
+  }
+
+  Future<String> setFeedrate(int feedrate) async {
+    try {
+      print("este es el Feedrate: $feedrate");
+      final response = await _dio.post("/feedrate?feedrate=$feedrate");
+
+      return response.data;
+    } catch (e) {
+      throw Exception("Error setting mode : $e");
+    }
+  }
+
+  Future<String> setRapidTraverse(int rapidTraverse) async {
+    try {
+      print("este es el Feedrate: $rapidTraverse");
+      final response = await _dio.post(
+        "/rapid-traverse?rapidTraverse=$rapidTraverse",
+      );
 
       return response.data;
     } catch (e) {
@@ -193,6 +204,16 @@ class ControlService {
       return response.data;
     } catch (e) {
       throw Exception("Error setting mode : $e");
+    }
+  }
+
+  Future<String> getMainProgram() async {
+    try {
+      final response = await _dio.get("/program/main");
+
+      return response.data;
+    } catch (e) {
+      throw Exception("Error getting program : $e");
     }
   }
 

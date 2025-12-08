@@ -14,45 +14,46 @@ class RapidTravSelectorWidget extends StatelessWidget {
     TextTheme textTheme = Theme.of(context).textTheme;
     Size mediaQuery = MediaQuery.of(context).size;
 
-    return Consumer(
-      builder: (context, RapidTravSelectorProvider provider, child) =>
-          GestureDetector(
-            child: AnimatedContainer(
-              decoration: BoxDecoration(
-                color: provider.value == value
-                    ? Colors.indigo
-                    : Colors.grey[300],
-                borderRadius: BorderRadius.circular(4.0),
-              ),
-              width: mediaQuery.width * 0.105,
-              height: mediaQuery.height * 0.125,
-              duration: const Duration(milliseconds: 100),
-              curve: Curves.easeInOut,
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: mediaQuery.width * 0.01,
-                  vertical: mediaQuery.height * 0.01,
-                ),
-                child: Center(
-                  child: FittedBox(
-                    child: Text(
-                      "$value%",
-                      style: textTheme.bodySmall?.copyWith(
-                        fontSize: 12,
-                        color: provider.value == value
-                            ? Colors.white
-                            : Colors.black,
+    return Column(
+      children: [
+        Consumer(
+          builder: (context, RapidTravSelectorProvider provider, child) =>
+              GestureDetector(
+                child: AnimatedContainer(
+                  decoration: BoxDecoration(
+                    color: provider.value == value
+                        ? Colors.indigo
+                        : Colors.grey[300],
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  width: mediaQuery.width * 0.085,
+                  height: mediaQuery.height * 0.105,
+                  duration: const Duration(milliseconds: 100),
+                  curve: Curves.easeInOut,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: mediaQuery.width * 0.01,
+                      vertical: mediaQuery.height * 0.01,
+                    ),
+                    child: Center(
+                      child: Text(
+                        "$value%",
+                        style: textTheme.bodySmall?.copyWith(
+                          color: provider.value == value
+                              ? Colors.white
+                              : Colors.black,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ),
 
-            onTap: () {
-              provider.value = value;
-            },
-          ),
+                onTap: () {
+                  provider.value = value;
+                },
+              ),
+        ),
+      ],
     );
   }
 }

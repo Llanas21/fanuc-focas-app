@@ -4,70 +4,54 @@ import 'package:fanuc_focas_app/data/services/control_service.dart';
 import 'package:flutter/material.dart';
 
 class MachPosProvider with ChangeNotifier {
-  late Future<String> _machPos;
-
-  Future<String> get machPos => _machPos;
-
   final ControlService _controlService = ControlService();
-  final Map<int, StreamController<String?>> _controllers = {};
-  final Map<int, Timer?> _timers = {};
-  final Map<int, bool> _running = {};
 
-  Stream<String?> getStream(int axis) {
-    _controllers.putIfAbsent(axis, () => StreamController<String?>.broadcast());
-    return _controllers[axis]!.stream;
+  StreamController<List<String?>>? _controller;
+  Timer? _timer;
+  bool _running = false;
+
+  /// Stream único de lista de posiciones
+  Stream<List<String?>> get stream {
+    _controller ??= StreamController<List<String?>>.broadcast();
+    return _controller!.stream;
   }
 
-  /// Iniciar stream de un eje
-  void startStream(int axis) {
-    if (_running[axis] == true) return;
+  /// Inicia un solo stream para todas las posiciones
+  void startStream() {
+    print("Se manda a llamar startStream");
+    if (_running) return;
 
-    _running[axis] = true;
-    _controllers.putIfAbsent(axis, () => StreamController<String?>.broadcast());
+    _running = true;
+    _controller ??= StreamController<List<String?>>.broadcast();
 
-    _timers[axis] = Timer.periodic(const Duration(milliseconds: 100), (
-      _,
-    ) async {
+    _timer = Timer.periodic(const Duration(milliseconds: 300), (_) async {
       try {
-        final pos = await _controlService.getMachPosition(axis);
-        print("Stream del axis $axis");
-        _controllers[axis]!.add(pos);
+        List<String> positions = await _controlService.getMachPositions();
+        print(
+          "Estas son las posiciones que se añaden al controller $positions",
+        );
+        _controller!.add(positions);
       } catch (e) {
-        _controllers[axis]!.add(null);
+        print("entra en el catch");
+        _controller!.add(List.filled(8, null));
       }
     });
-    notifyListeners();
+
+    // ❌ NO LLAMAR notifyListeners();
   }
 
-  /// Detener stream de un eje
-  void stopStream(int axis) {
-    _running[axis] = false;
-    _timers[axis]?.cancel();
-    _timers[axis] = null;
-    notifyListeners();
-  }
+  void stopStream() {
+    _running = false;
+    _timer?.cancel();
+    _timer = null;
 
-  /// Saber si un eje está corriendo
-  bool isRunning(int axis) => _running[axis] ?? false;
-
-  /// Liberar recursos
-  void disposeAxis(int axis) {
-    stopStream(axis);
-    _controllers[axis]?.close();
-    _controllers.remove(axis);
-    _timers.remove(axis);
-    _running.remove(axis);
+    // ❌ NO NOTIFICAR
   }
 
   @override
   void dispose() {
-    for (var axis in _controllers.keys) {
-      disposeAxis(axis);
-    }
+    stopStream();
+    _controller?.close();
     super.dispose();
-  }
-
-  void shouldRefresh() {
-    notifyListeners();
   }
 }

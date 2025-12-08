@@ -100,15 +100,15 @@ class GamepadProvider with ChangeNotifier {
 
       if (newValue) {
         if (event.key.contains("X")) {
-          absPosProvider.startStream(axisSelector.selectedHAxis!);
-          machPosProvider.startStream(axisSelector.selectedHAxis!);
+          absPosProvider.startStream();
+          machPosProvider.startStream();
           print("ENTRAAAA AL CONTROL DEL X");
           print("EJE: ${axisSelector.selectedHAxis}");
           controlService.startJog(axisSelector.selectedHAxis!, direction);
         }
         if (event.key.contains("R")) {
-          absPosProvider.startStream(axisSelector.selectedVAxis!);
-          machPosProvider.startStream(axisSelector.selectedVAxis!);
+          absPosProvider.startStream();
+          machPosProvider.startStream();
           print("ENTRAAAA AL CONTROL DEL R");
           print("EJE: ${axisSelector.selectedVAxis}");
           controlService.startJog(axisSelector.selectedVAxis!, direction);
@@ -119,10 +119,10 @@ class GamepadProvider with ChangeNotifier {
           axisSelector.selectedHAxis,
           axisSelector.selectedVAxis,
         ]);
-        absPosProvider.stopStream(axisSelector.selectedHAxis!);
-        machPosProvider.stopStream(axisSelector.selectedHAxis!);
-        absPosProvider.stopStream(axisSelector.selectedVAxis!);
-        machPosProvider.stopStream(axisSelector.selectedVAxis!);
+        absPosProvider.stopStream();
+        machPosProvider.stopStream();
+        absPosProvider.stopStream();
+        machPosProvider.stopStream();
       }
 
       // newValue
@@ -162,10 +162,10 @@ class GamepadProvider with ChangeNotifier {
           axisSelector.selectedVAxis,
         ]);
 
-        absPosProvider.stopStream(axisSelector.selectedHAxis!);
-        machPosProvider.stopStream(axisSelector.selectedHAxis!);
-        absPosProvider.stopStream(axisSelector.selectedVAxis!);
-        machPosProvider.stopStream(axisSelector.selectedVAxis!);
+        absPosProvider.stopStream();
+        machPosProvider.stopStream();
+        absPosProvider.stopStream();
+        machPosProvider.stopStream();
       }
 
       notifyListeners();

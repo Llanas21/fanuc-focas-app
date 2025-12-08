@@ -116,13 +116,13 @@ class _JogJoystickWidgetState extends State<JogJoystickWidget> {
             context,
           ).showSnackBar(const SnackBar(content: Text("Select an axis")));
         } else {
-          absPosProvider.startStream(axisSelectorProvider.selectedVAxis!);
-          machPosProvider.startStream(axisSelectorProvider.selectedVAxis!);
+          // absPosProvider.startStream(axisSelectorProvider.selectedVAxis!);
+          // machPosProvider.startStream(axisSelectorProvider.selectedVAxis!);
         }
       },
       onStickDragEnd: () {
-        absPosProvider.stopStream(axisSelectorProvider.selectedVAxis!);
-        machPosProvider.stopStream(axisSelectorProvider.selectedVAxis!);
+        // absPosProvider.stopStream(axisSelectorProvider.selectedVAxis!);
+        // machPosProvider.stopStream(axisSelectorProvider.selectedVAxis!);
       },
     );
   }

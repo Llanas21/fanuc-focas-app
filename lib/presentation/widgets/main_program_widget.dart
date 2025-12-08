@@ -1,10 +1,12 @@
 import 'package:fanuc_focas_app/data/services/control_service.dart';
+import 'package:fanuc_focas_app/presentation/providers/mode_selector_provider.dart';
 import 'package:fanuc_focas_app/presentation/widgets/abs_pos_widget.dart';
 import 'package:fanuc_focas_app/presentation/widgets/cycle_btn_widget.dart';
 import 'package:fanuc_focas_app/presentation/widgets/vaxis_btn_widget.dart';
 import 'package:fanuc_focas_app/presentation/widgets/mach_pos_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class MainProgramWidget extends StatelessWidget {
   const MainProgramWidget({super.key});
@@ -15,67 +17,78 @@ class MainProgramWidget extends StatelessWidget {
     Size mediaQuery = MediaQuery.of(context).size;
 
     ControlService controlService = ControlService();
+    StatusInfoProvider statusInfoProvider = StatusInfoProvider();
 
-    return GestureDetector(
-      onTap: () {},
-      child: Stack(
-        children: [
-          FutureBuilder(
-            future: controlService.getProgram(2),
-            builder: (context, asyncSnapshot) {
-              return Container(
-                width: double.infinity,
-                height: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.grey.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: Column(
-                  children: [
-                    Expanded(
-                      flex: 5,
-                      child: SingleChildScrollView(
-                        padding: EdgeInsets.only(
-                          top: mediaQuery.height * 0.05,
-                          left: mediaQuery.width * 0.01,
-                        ),
-                        // child: Text(
-                        //   asyncSnapshot.data ?? "Loading...",
-                        //   style: GoogleFonts.firaCode(fontSize: 22),
-                        // ),
-                        child: Align(
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            "G21 G17 G40 G49 G80 G90\nG54\nT1 M06\nS1500 M03\nM05\nM09\nG28 U0 V0 W0\nM30\nT1 M06\nG17 G40 G49\nG54\nT1 M06\nS1500 M03\nM05\nM09\nG28 U0 V0 W0",
-                            style: textTheme.bodySmall,
-                          ),
-                        ),
+    return Consumer(
+      builder:
+          (
+            BuildContext context,
+            StatusInfoProvider modeSelectorProvider,
+            Widget? child,
+          ) => GestureDetector(
+            onTap: () {},
+            child: Stack(
+              children: [
+                FutureBuilder(
+                  future: controlService.getMainProgram(),
+                  builder: (context, asyncSnapshot) {
+                    return Container(
+                      width: double.infinity,
+                      height: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(8.0),
                       ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      child: Column(
                         children: [
-                          CycleBtnWidget(icon: Icons.play_arrow),
-                          CycleBtnWidget(icon: Icons.stop),
-                          CycleBtnWidget(icon: Icons.home),
-                          CycleBtnWidget(icon: Icons.refresh),
+                          Expanded(
+                            flex: 5,
+                            child: SingleChildScrollView(
+                              padding: EdgeInsets.only(
+                                top: mediaQuery.height * 0.05,
+                                left: mediaQuery.width * 0.01,
+                              ),
+                              // child: Text(
+                              //   asyncSnapshot.data ?? "Loading...",
+                              //   style: GoogleFonts.firaCode(fontSize: 22),
+                              // ),
+                              child: Align(
+                                alignment: Alignment.topLeft,
+                                child: Text(
+                                  statusInfoProvider.mode == 0 ||
+                                          statusInfoProvider.mode == 1
+                                      ? asyncSnapshot.data!
+                                      : "",
+                                  style: textTheme.bodySmall,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                CycleBtnWidget(icon: Icons.play_arrow),
+                                CycleBtnWidget(icon: Icons.home),
+                                CycleBtnWidget(icon: Icons.stop),
+                                CycleBtnWidget(icon: Icons.refresh),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
-                    ),
-                  ],
+                    );
+                  },
                 ),
-              );
-            },
+                Positioned(
+                  top: mediaQuery.height * 0.01,
+                  right: mediaQuery.width * 0.01,
+                  child: Text("O 0001023", style: textTheme.titleSmall),
+                ),
+              ],
+            ),
           ),
-          Positioned(
-            top: mediaQuery.height * 0.01,
-            right: mediaQuery.width * 0.01,
-            child: Text("O 0001023", style: textTheme.titleSmall),
-          ),
-        ],
-      ),
     );
   }
 
