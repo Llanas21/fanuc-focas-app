@@ -9,7 +9,6 @@ class VAxisBtnWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextTheme textTheme = Theme.of(context).textTheme;
     Size mediaQuery = MediaQuery.of(context).size;
 
     final Map<String, int> axes = {
@@ -23,41 +22,53 @@ class VAxisBtnWidget extends StatelessWidget {
       "C": 8,
     };
 
-    return Consumer(
-      builder: (context, AxisSelectorProvider axisSelectorProvider, child) =>
-          SizedBox(
-            width: mediaQuery.width * 0.12,
+    final int? axisId = axes[label];
+
+    return Consumer<AxisSelectorProvider>(
+      builder: (context, axisSelectorProvider, child) {
+        TextTheme textTheme = Theme.of(context).textTheme;
+        final bool isSelected = axisSelectorProvider.selectedVAxis == axisId;
+
+        return GestureDetector(
+          onTap: () {
+            try {
+              axisSelectorProvider.selectedVAxis = isSelected ? null : axisId;
+            } catch (e) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Text(e.toString()),
+                  ),
+                ),
+              );
+            }
+          },
+
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 120),
+            curve: Curves.easeInOut,
+            width: mediaQuery.width * 0.06,
             height: mediaQuery.height * 0.07,
-            child: TextButton(
-              onPressed: () {
-                try {
-                  axisSelectorProvider.selectedVAxis == axes[label]
-                      ? axisSelectorProvider.selectedVAxis = null
-                      : axisSelectorProvider.selectedVAxis = axes[label];
-                } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Text(e.toString()),
-                      ),
-                    ),
-                  );
-                }
-              },
-              style: TextButton.styleFrom(
-                padding: const EdgeInsets.all(6.0),
-                backgroundColor:
-                    axisSelectorProvider.selectedVAxis == axes[label]
-                    ? Colors.indigo.withValues(alpha: 0.2)
-                    : Colors.transparent,
-              ),
+
+            decoration: BoxDecoration(
+              color: isSelected ? Colors.indigo : Colors.transparent,
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+
+            child: Center(
               child: FittedBox(
-                fit: BoxFit.contain,
-                child: Text(label, style: textTheme.bodySmall),
+                child: Text(
+                  label,
+                  style: textTheme.bodySmall?.copyWith(
+                    color: isSelected ? Colors.white : Colors.black,
+                  ),
+                ),
               ),
             ),
           ),
+        );
+      },
     );
   }
 }

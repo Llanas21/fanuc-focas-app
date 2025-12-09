@@ -23,41 +23,56 @@ class HAxisBtnWidget extends StatelessWidget {
       "C": 8,
     };
 
-    return Consumer(
-      builder: (context, AxisSelectorProvider axisSelectorProvider, child) =>
-          SizedBox(
-            width: mediaQuery.width * 0.12,
+    final int? axisId = axes[label];
+
+    return Consumer<AxisSelectorProvider>(
+      builder: (context, axisSelectorProvider, child) {
+        final bool isSelected = axisSelectorProvider.selectedHAxis == axisId;
+
+        return GestureDetector(
+          onTap: () {
+            try {
+              axisSelectorProvider.selectedHAxis = isSelected ? null : axisId;
+            } catch (e) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Text(e.toString()),
+                  ),
+                ),
+              );
+            }
+          },
+
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 120),
+            curve: Curves.easeInOut,
+            width: mediaQuery.width * 0.06,
             height: mediaQuery.height * 0.07,
-            child: TextButton(
-              onPressed: () {
-                try {
-                  axisSelectorProvider.selectedHAxis == axes[label]
-                      ? axisSelectorProvider.selectedHAxis = null
-                      : axisSelectorProvider.selectedHAxis = axes[label];
-                } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Text(e.toString()),
-                      ),
-                    ),
-                  );
-                }
-              },
-              style: TextButton.styleFrom(
-                padding: const EdgeInsets.all(6.0),
-                backgroundColor:
-                    axisSelectorProvider.selectedHAxis == axes[label]
-                    ? Colors.indigo.withValues(alpha: 0.2)
-                    : Colors.transparent,
-              ),
+
+            decoration: BoxDecoration(
+              color: isSelected ? Colors.indigo : Colors.transparent,
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+
+            child: Center(
               child: FittedBox(
-                fit: BoxFit.contain,
-                child: Text(label, style: textTheme.bodySmall),
+                child: Text(
+                  label,
+                  // style: TextStyle(
+                  //   color: isSelected ? Colors.white : Colors.black,
+                  //   fontWeight: FontWeight.w600,
+                  // ),
+                  style: textTheme.bodySmall?.copyWith(
+                    color: isSelected ? Colors.white : Colors.black,
+                  ),
+                ),
               ),
             ),
           ),
+        );
+      },
     );
   }
 }
