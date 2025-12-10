@@ -8,7 +8,7 @@ class ControlService {
     : _dio = Dio(
         BaseOptions(
           // baseUrl: "http://10.0.2.2:5046",
-          baseUrl: "http://192.168.50.15:5046",
+          baseUrl: "http://192.168.50.15:5000",
           // baseUrl: "http://localhost:5046",
           connectTimeout: const Duration(seconds: 20),
           receiveTimeout: const Duration(seconds: 20),
