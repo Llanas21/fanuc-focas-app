@@ -14,7 +14,7 @@ class _AllAbsPosWidgetState extends State<AllAbsPosWidget> {
   @override
   void initState() {
     super.initState();
-    context.read<AbsPosProvider>().startStream(); // ← seguro
+    // context.read<AbsPosProvider>().startStream(); // ← seguro
   }
 
   @override

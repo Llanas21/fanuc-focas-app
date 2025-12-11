@@ -16,7 +16,7 @@ class _AllMachPosWidgetState extends State<AllMachPosWidget> {
   @override
   void initState() {
     super.initState();
-    context.read<MachPosProvider>().startStream(); // ← seguro
+    // context.read<MachPosProvider>().startStream(); // ← seguro
   }
 
   @override

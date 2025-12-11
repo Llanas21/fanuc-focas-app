@@ -1,4 +1,6 @@
 import 'package:fanuc_focas_app/data/services/control_service.dart';
+import 'package:fanuc_focas_app/presentation/providers/abs_pos_provider.dart';
+import 'package:fanuc_focas_app/presentation/providers/mach_pos_provider.dart';
 import 'package:fanuc_focas_app/presentation/providers/mode_selector_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -24,8 +26,16 @@ class _CycleBtnWidgetState extends State<CycleBtnWidget> {
     super.initState();
 
     actions = {
-      Icons.play_arrow: (pressed) => controlService.startCycle(pressed),
-      Icons.stop: (pressed) => controlService.stopCycle(pressed),
+      Icons.play_arrow: (pressed) {
+        context.read<AbsPosProvider>().startStream();
+        context.read<MachPosProvider>().startStream();
+        controlService.startCycle(pressed);
+      },
+      Icons.stop: (pressed) {
+        context.read<AbsPosProvider>().stopStream();
+        context.read<MachPosProvider>().stopStream();
+        controlService.stopCycle(pressed);
+      },
       Icons.refresh: (pressed) => controlService.reset(pressed),
       Icons.home: (pressed) => controlService.home(pressed),
     };

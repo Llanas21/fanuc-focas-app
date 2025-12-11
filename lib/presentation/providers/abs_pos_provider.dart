@@ -24,7 +24,7 @@ class AbsPosProvider with ChangeNotifier {
     _running = true;
     _controller ??= StreamController<List<String?>>.broadcast();
 
-    _timer = Timer.periodic(const Duration(milliseconds: 300), (_) async {
+    _timer = Timer.periodic(const Duration(milliseconds: 100), (_) async {
       try {
         List<String> positions = await _controlService.getAbsPositions();
         print(

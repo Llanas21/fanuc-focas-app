@@ -29,14 +29,14 @@ class DrawerWidget extends StatelessWidget {
                     child: Column(
                       children: [
                         Text(
-                          "José Llanas",
+                          "192.168.50.XX",
                           style: textTheme.titleMedium?.copyWith(
                             color: Colors.white,
                           ),
                         ),
                         SizedBox(height: mediaQuery.height * 0.01),
                         Text(
-                          "joseluisllanas21@gmail.com",
+                          "OPERATION XX",
                           style: textTheme.bodySmall?.copyWith(
                             color: Colors.white,
                           ),
@@ -94,6 +94,7 @@ class DrawerWidget extends StatelessWidget {
                                   // AuthService authService = AuthService();
                                   // await authService.signOut();
                                   // context.goNamed('/login');
+                                  context.replaceNamed('/conn');
                                 },
                                 child: Text(
                                   'Aceptar',

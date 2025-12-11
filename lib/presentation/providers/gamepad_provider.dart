@@ -53,9 +53,9 @@ class GamepadProvider with ChangeNotifier {
 
   void _handleAnalog(GamepadEvent event) {
     if (event.key.contains('Z')) {
-      print("DEADMAN detectado");
-      _updateDeadman(event);
-      return;
+      // print("DEADMAN detectado");
+      // _updateDeadman(event);
+      // return;
     }
 
     if (!_deadman) {
@@ -82,6 +82,13 @@ class GamepadProvider with ChangeNotifier {
   void _handleButton(GamepadEvent event) {
     _lastKey = event.key;
     _buttonPressed = event.value > 0;
+
+    if (event.key == 'button-2' || event.key == 'button-3') {
+      print("DEADMAN detectado por botón");
+      _updateDeadman(event);
+      return;
+    }
+
     notifyListeners();
   }
 
@@ -135,26 +142,56 @@ class GamepadProvider with ChangeNotifier {
     }
   }
 
+  // void _updateDeadmanAnalog(GamepadEvent event) {
+  //   // bool newValue = event.value == 128;
+  //   bool newValue;
+  //   if (event.value != 128 && event.value != 32767 && event.value != 65408) {
+  //     newValue = true;
+  //   } else {
+  //     newValue = false;
+  //   }
+
+  //   if (_deadman != newValue) {
+  //     _deadman = newValue;
+  //     print("Deadman: ${newValue ? "PRESIONADO" : "SUELTO"}");
+
+  //     if (newValue) {
+  //       // Deadman presionado
+  //       // Puede habilitar Jog
+  //       print("Jog habilitado por Deadman");
+  //     } else {
+  //       // Deadman suelto
+  //       // Frenar ejes
+  //       print("Jog detenido por Deadman");
+
+  //       controlService.stopJog([
+  //         axisSelector.selectedHAxis,
+  //         axisSelector.selectedVAxis,
+  //       ]);
+
+  //       absPosProvider.stopStream();
+  //       machPosProvider.stopStream();
+  //       absPosProvider.stopStream();
+  //       machPosProvider.stopStream();
+  //     }
+
+  //     notifyListeners();
+  //   }
+  // }
+
   void _updateDeadman(GamepadEvent event) {
-    // bool newValue = event.value == 128;
-    bool newValue;
-    if (event.value != 128 && event.value != 32767 && event.value != 65408) {
-      newValue = true;
-    } else {
-      newValue = false;
-    }
+    // Deadman activo si el botón 2 o 3 está presionado (value > 0)
+    bool newValue = event.value > 0;
 
     if (_deadman != newValue) {
       _deadman = newValue;
       print("Deadman: ${newValue ? "PRESIONADO" : "SUELTO"}");
 
       if (newValue) {
-        // Deadman presionado
-        // Puede habilitar Jog
+        // Deadman presionado → habilita Jog
         print("Jog habilitado por Deadman");
       } else {
-        // Deadman suelto
-        // Frenar ejes
+        // Deadman suelto → detener jog y streams
         print("Jog detenido por Deadman");
 
         controlService.stopJog([
@@ -162,8 +199,6 @@ class GamepadProvider with ChangeNotifier {
           axisSelector.selectedVAxis,
         ]);
 
-        absPosProvider.stopStream();
-        machPosProvider.stopStream();
         absPosProvider.stopStream();
         machPosProvider.stopStream();
       }
